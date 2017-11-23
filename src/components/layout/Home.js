@@ -6,8 +6,14 @@ class Home extends Component {
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col"><Answers /></div>
-                    <div className="col-6"><Questions /></div>
+                    <div className="col-6">
+                        <h2>Question</h2>
+                        <Questions />
+                    </div>
+                    <div className="col-6">
+                        <h2>Answer</h2>
+                        <Answers />
+                    </div>
                 </div>  
             </div>
         )

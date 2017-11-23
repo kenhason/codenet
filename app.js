@@ -11,8 +11,10 @@ var api = require('./routes/api')
 
 var app = express();
 
-// var dbUrl = "mongodb://localhost/codenet"
-var dbUrl = 'mongodb://kenhason:12345@ds117136.mlab.com:17136/codenet'
+var common = require('./common')
+var config = common.config();
+var dbUrl = config.dbUrl
+// var dbUrl = 'mongodb://kenhason:12345@ds117136.mlab.com:17136/codenet'
 mongoose.connect(dbUrl, function(err, res) {
   if (err) {
     console.log("DB CONNECTION FAILED: " + err)

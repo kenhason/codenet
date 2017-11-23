@@ -25,7 +25,7 @@ class Questions extends Component {
 
     render() {
         const questions = this.state.questionList.map((question, i) => {
-            console.log(question)
+            // console.log(question)
 			return (
 				<div key={i}><Question question={question}  /></div>
 			)

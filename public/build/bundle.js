@@ -18340,6 +18340,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _ = __webpack_require__(27);
 
+var _APIManager = __webpack_require__(35);
+
+var _APIManager2 = _interopRequireDefault(_APIManager);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18354,34 +18358,45 @@ var Answers = function (_Component) {
     function Answers() {
         _classCallCheck(this, Answers);
 
-        return _possibleConstructorReturn(this, (Answers.__proto__ || Object.getPrototypeOf(Answers)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Answers.__proto__ || Object.getPrototypeOf(Answers)).call(this));
+
+        _this.state = {
+            answerList: []
+        };
+        return _this;
     }
 
     _createClass(Answers, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            _APIManager2.default.get('/api/answer', null, function (err, res) {
+                if (err) {
+                    alert("ERROR: " + err);
+                    return;
+                }
+                console.log(res.result);
+                _this2.setState({
+                    answerList: res.result
+                });
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var answers = this.state.answerList.map(function (answer, i) {
+                return _react2.default.createElement(
+                    'div',
+                    { key: i },
+                    _react2.default.createElement(_.Answer, { answer: answer })
+                );
+            });
+
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(
-                    'ul',
-                    null,
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(_.Answer, null)
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(_.Answer, null)
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(_.Answer, null)
-                    )
-                )
+                answers
             );
         }
     }]);
@@ -18456,7 +18471,7 @@ var Questions = function (_Component) {
         key: 'render',
         value: function render() {
             var questions = this.state.questionList.map(function (question, i) {
-                console.log(question);
+                // console.log(question)
                 return _react2.default.createElement(
                     'div',
                     { key: i },
@@ -18524,13 +18539,23 @@ var Home = function (_Component) {
                     { className: 'row' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'col' },
-                        _react2.default.createElement(_.Answers, null)
+                        { className: 'col-6' },
+                        _react2.default.createElement(
+                            'h2',
+                            null,
+                            'Question'
+                        ),
+                        _react2.default.createElement(_.Questions, null)
                     ),
                     _react2.default.createElement(
                         'div',
                         { className: 'col-6' },
-                        _react2.default.createElement(_.Questions, null)
+                        _react2.default.createElement(
+                            'h2',
+                            null,
+                            'Answer'
+                        ),
+                        _react2.default.createElement(_.Answers, null)
                     )
                 )
             );
@@ -18581,8 +18606,35 @@ var Answer = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 "div",
-                { className: "text-primary" },
-                "Hello from Answer"
+                { className: "card m-2" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "card-block" },
+                    _react2.default.createElement(
+                        "h4",
+                        { className: "card-title" },
+                        "QuestionID: ",
+                        this.props.answer.questionId
+                    ),
+                    _react2.default.createElement(
+                        "h6",
+                        { className: "card-subtitle mb-2 text-muted" },
+                        "Testing Result: ",
+                        this.props.answer.testingResult
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        { className: "card-text" },
+                        "Codes: ",
+                        this.props.answer.codes
+                    ),
+                    _react2.default.createElement(
+                        "a",
+                        { href: "#", className: "card-link" },
+                        "Time: ",
+                        this.props.answer.timestamp
+                    )
+                )
             );
         }
     }]);
