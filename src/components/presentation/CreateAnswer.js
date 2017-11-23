@@ -26,11 +26,12 @@ class CreateAnswer extends Component {
     
     render() {
         return(
-            <div className="card bg-faded">
+            <div className="card bg-faded m-2">
                 <div className="card-block">
                     <h4 className="card-title">Create Answer</h4>
                     <div>
                         <div className="form-group">
+                            <label htmlFor="codes">Codes</label>
                             <input onChange={this.updateAnswer.bind(this)} className="form-control" type="text" placeholder="Codes"/>
                         </div>
                         <button onClick={this.submitAnswer.bind(this)} className="btn btn-info" type="submit">Submit Answer</button>

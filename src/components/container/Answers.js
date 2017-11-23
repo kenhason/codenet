@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Answer } from '../'
+import { Answer, CreateAnswer } from '../'
 import APIManager from '../../../utils/APIManager'
-import { CreateAnswer } from '../'
 
 class Answers extends Component {
     constructor() {
@@ -35,7 +34,7 @@ class Answers extends Component {
             console.log(res.result)
             
             let updateAnswerList = Object.assign([], this.state.answerList)
-            updateAnswerList.push(res.result)
+            updateAnswerList.unshift(res.result)
             
             this.setState({
                 answerList: updateAnswerList
@@ -52,9 +51,8 @@ class Answers extends Component {
 
         return(
             <div>
-                {answers}
-                <br/>
                 <CreateAnswer onCreate={this.submitAnswer.bind(this)}/>
+                {answers}
             </div>
         )
     }

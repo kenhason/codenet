@@ -4,6 +4,7 @@ import Home from './layout/Home'
 import Answer from './presentation/Answer'
 import Question from './presentation/Question'
 import CreateAnswer from './presentation/CreateAnswer'
+import CreateQuestion from './presentation/CreateQuestion'
 
 export {
     Answers,
@@ -11,5 +12,6 @@ export {
     Home,
     Answer,
     Question,
-    CreateAnswer
+    CreateAnswer,
+    CreateQuestion
 }

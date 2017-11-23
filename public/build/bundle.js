@@ -18290,7 +18290,7 @@ module.exports = camelize;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CreateAnswer = exports.Question = exports.Answer = exports.Home = exports.Questions = exports.Answers = undefined;
+exports.CreateQuestion = exports.CreateAnswer = exports.Question = exports.Answer = exports.Home = exports.Questions = exports.Answers = undefined;
 
 var _Answers = __webpack_require__(29);
 
@@ -18316,6 +18316,10 @@ var _CreateAnswer = __webpack_require__(42);
 
 var _CreateAnswer2 = _interopRequireDefault(_CreateAnswer);
 
+var _CreateQuestion = __webpack_require__(43);
+
+var _CreateQuestion2 = _interopRequireDefault(_CreateQuestion);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Answers = _Answers2.default;
@@ -18324,6 +18328,7 @@ exports.Home = _Home2.default;
 exports.Answer = _Answer2.default;
 exports.Question = _Question2.default;
 exports.CreateAnswer = _CreateAnswer2.default;
+exports.CreateQuestion = _CreateQuestion2.default;
 
 /***/ }),
 /* 28 */,
@@ -18401,7 +18406,7 @@ var Answers = function (_Component) {
                 console.log(res.result);
 
                 var updateAnswerList = Object.assign([], _this3.state.answerList);
-                updateAnswerList.push(res.result);
+                updateAnswerList.unshift(res.result);
 
                 _this3.setState({
                     answerList: updateAnswerList
@@ -18422,9 +18427,8 @@ var Answers = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                answers,
-                _react2.default.createElement('br', null),
-                _react2.default.createElement(_.CreateAnswer, { onCreate: this.submitAnswer.bind(this) })
+                _react2.default.createElement(_.CreateAnswer, { onCreate: this.submitAnswer.bind(this) }),
+                answers
             );
         }
     }]);
@@ -18496,6 +18500,27 @@ var Questions = function (_Component) {
             });
         }
     }, {
+        key: 'submitQuestion',
+        value: function submitQuestion(question) {
+            var _this3 = this;
+
+            console.log("submitAnswer" + JSON.stringify(question));
+            _APIManager2.default.post('/api/question', question, function (err, res) {
+                if (err) {
+                    alert("ERROR: " + err);
+                    return;
+                }
+                console.log(res.result);
+
+                var updatedQuestionList = Object.assign([], _this3.state.questionList);
+                updatedQuestionList.unshift(res.result);
+
+                _this3.setState({
+                    questionList: updatedQuestionList
+                });
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var questions = this.state.questionList.map(function (question, i) {
@@ -18510,6 +18535,7 @@ var Questions = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(_.CreateQuestion, { onCreate: this.submitQuestion.bind(this) }),
                 questions
             );
         }
@@ -18710,6 +18736,7 @@ var Question = function (_Component) {
     _createClass(Question, [{
         key: "render",
         value: function render() {
+            var status = this.props.question.status ? "Solved" : "Pending";
             return _react2.default.createElement(
                 "div",
                 { className: "card m-2" },
@@ -18738,7 +18765,7 @@ var Question = function (_Component) {
                         "a",
                         { href: "#", className: "card-link" },
                         "status: ",
-                        this.props.question.status
+                        status
                     ),
                     _react2.default.createElement(
                         "a",
@@ -20919,7 +20946,7 @@ var CreateAnswer = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'card bg-faded' },
+                { className: 'card bg-faded m-2' },
                 _react2.default.createElement(
                     'div',
                     { className: 'card-block' },
@@ -20934,6 +20961,11 @@ var CreateAnswer = function (_Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'form-group' },
+                            _react2.default.createElement(
+                                'label',
+                                { htmlFor: 'codes' },
+                                'Codes'
+                            ),
                             _react2.default.createElement('input', { onChange: this.updateAnswer.bind(this), className: 'form-control', type: 'text', placeholder: 'Codes' })
                         ),
                         _react2.default.createElement(
@@ -20951,6 +20983,116 @@ var CreateAnswer = function (_Component) {
 }(_react.Component);
 
 exports.default = CreateAnswer;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CreateQuestion = function (_Component) {
+    _inherits(CreateQuestion, _Component);
+
+    function CreateQuestion() {
+        _classCallCheck(this, CreateQuestion);
+
+        var _this = _possibleConstructorReturn(this, (CreateQuestion.__proto__ || Object.getPrototypeOf(CreateQuestion)).call(this));
+
+        _this.state = {
+            question: {
+                description: '',
+                price: 0
+            }
+        };
+        return _this;
+    }
+
+    _createClass(CreateQuestion, [{
+        key: 'updateQuestion',
+        value: function updateQuestion(event) {
+            console.log(event.target.value);
+            var updatedQuestion = Object.assign({}, this.state.question);
+            updatedQuestion[event.target.id] = event.target.value;
+            this.setState({
+                question: updatedQuestion
+            });
+        }
+    }, {
+        key: 'submitQuestion',
+        value: function submitQuestion() {
+            this.props.onCreate(this.state.question);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'card bg-faded m-2' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'card-block' },
+                    _react2.default.createElement(
+                        'h4',
+                        { className: 'card-title' },
+                        'Create Question'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            _react2.default.createElement(
+                                'label',
+                                { htmlFor: 'description' },
+                                'Description'
+                            ),
+                            _react2.default.createElement('input', { id: 'description', onChange: this.updateQuestion.bind(this), className: 'form-control', type: 'text', placeholder: 'Description' })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            _react2.default.createElement(
+                                'label',
+                                { htmlFor: 'description' },
+                                'Price'
+                            ),
+                            _react2.default.createElement('input', { id: 'price', onChange: this.updateQuestion.bind(this), className: 'form-control', type: 'text', placeholder: 'Price' })
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { onClick: this.submitQuestion.bind(this), className: 'btn btn-danger', type: 'submit' },
+                            'Submit Question'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CreateQuestion;
+}(_react.Component);
+
+exports.default = CreateQuestion;
 
 /***/ })
 /******/ ]);
