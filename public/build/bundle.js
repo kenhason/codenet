@@ -18290,7 +18290,7 @@ module.exports = camelize;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Question = exports.Answer = exports.Home = exports.Questions = exports.Answers = undefined;
+exports.CreateAnswer = exports.Question = exports.Answer = exports.Home = exports.Questions = exports.Answers = undefined;
 
 var _Answers = __webpack_require__(29);
 
@@ -18312,6 +18312,10 @@ var _Question = __webpack_require__(33);
 
 var _Question2 = _interopRequireDefault(_Question);
 
+var _CreateAnswer = __webpack_require__(42);
+
+var _CreateAnswer2 = _interopRequireDefault(_CreateAnswer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Answers = _Answers2.default;
@@ -18319,6 +18323,7 @@ exports.Questions = _Questions2.default;
 exports.Home = _Home2.default;
 exports.Answer = _Answer2.default;
 exports.Question = _Question2.default;
+exports.CreateAnswer = _CreateAnswer2.default;
 
 /***/ }),
 /* 28 */,
@@ -18383,6 +18388,27 @@ var Answers = function (_Component) {
             });
         }
     }, {
+        key: 'submitAnswer',
+        value: function submitAnswer(answer) {
+            var _this3 = this;
+
+            console.log("submitAnswer");
+            _APIManager2.default.post('/api/answer', answer, function (err, res) {
+                if (err) {
+                    alert("ERROR: " + err);
+                    return;
+                }
+                console.log(res.result);
+
+                var updateAnswerList = Object.assign([], _this3.state.answerList);
+                updateAnswerList.push(res.result);
+
+                _this3.setState({
+                    answerList: updateAnswerList
+                });
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var answers = this.state.answerList.map(function (answer, i) {
@@ -18396,7 +18422,9 @@ var Answers = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                answers
+                answers,
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(_.CreateAnswer, { onCreate: this.submitAnswer.bind(this) })
             );
         }
     }]);
@@ -18542,7 +18570,7 @@ var Home = function (_Component) {
                         { className: 'col-6' },
                         _react2.default.createElement(
                             'h2',
-                            null,
+                            { className: 'text-danger' },
                             'Question'
                         ),
                         _react2.default.createElement(_.Questions, null)
@@ -18552,7 +18580,7 @@ var Home = function (_Component) {
                         { className: 'col-6' },
                         _react2.default.createElement(
                             'h2',
-                            null,
+                            { className: 'text-info' },
                             'Answer'
                         ),
                         _react2.default.createElement(_.Answers, null)
@@ -18604,6 +18632,7 @@ var Answer = function (_Component) {
     _createClass(Answer, [{
         key: "render",
         value: function render() {
+            var testingResult = this.props.answer.testingResult ? "Success" : "Fail";
             return _react2.default.createElement(
                 "div",
                 { className: "card m-2" },
@@ -18620,7 +18649,7 @@ var Answer = function (_Component) {
                         "h6",
                         { className: "card-subtitle mb-2 text-muted" },
                         "Testing Result: ",
-                        this.props.answer.testingResult
+                        testingResult
                     ),
                     _react2.default.createElement(
                         "p",
@@ -18769,6 +18798,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
     get: function get(url, params, callback) {
         _superagent2.default.get(url).query(params).set('Accept', 'application/json').end(function (err, response) {
+            if (err) {
+                callback(err, null);
+                return;
+            }
+
+            if (response.body.confirmation == 'fail') callback({ message: response.body.message }, null);else callback(null, response.body);
+        });
+    },
+
+    post: function post(url, body, callback) {
+        _superagent2.default.post(url).send(body).set('Content-Type', 'application/json').end(function (err, response) {
             if (err) {
                 callback(err, null);
                 return;
@@ -20817,6 +20857,100 @@ Agent.prototype._setDefaults = function(req) {
 
 module.exports = Agent;
 
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CreateAnswer = function (_Component) {
+    _inherits(CreateAnswer, _Component);
+
+    function CreateAnswer() {
+        _classCallCheck(this, CreateAnswer);
+
+        var _this = _possibleConstructorReturn(this, (CreateAnswer.__proto__ || Object.getPrototypeOf(CreateAnswer)).call(this));
+
+        _this.state = {
+            answer: {
+                codes: ''
+            }
+        };
+        return _this;
+    }
+
+    _createClass(CreateAnswer, [{
+        key: 'updateAnswer',
+        value: function updateAnswer(event) {
+            console.log(event.target.value);
+            var updatedAnswer = Object.assign({}, this.state.answer);
+            updatedAnswer.codes = event.target.value;
+            this.setState({
+                answer: updatedAnswer
+            });
+        }
+    }, {
+        key: 'submitAnswer',
+        value: function submitAnswer() {
+            this.props.onCreate(this.state.answer);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'card bg-faded' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'card-block' },
+                    _react2.default.createElement(
+                        'h4',
+                        { className: 'card-title' },
+                        'Create Answer'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'form-group' },
+                            _react2.default.createElement('input', { onChange: this.updateAnswer.bind(this), className: 'form-control', type: 'text', placeholder: 'Codes' })
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { onClick: this.submitAnswer.bind(this), className: 'btn btn-info', type: 'submit' },
+                            'Submit Answer'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CreateAnswer;
+}(_react.Component);
+
+exports.default = CreateAnswer;
 
 /***/ })
 /******/ ]);

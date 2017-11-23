@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Answer } from '../'
 import APIManager from '../../../utils/APIManager'
+import { CreateAnswer } from '../'
 
 class Answers extends Component {
     constructor() {
@@ -24,6 +25,24 @@ class Answers extends Component {
         })
     }
 
+    submitAnswer(answer) {
+        console.log("submitAnswer")
+        APIManager.post('/api/answer', answer, (err, res) => {
+            if (err) {
+                alert("ERROR: " + err)
+                return
+            }
+            console.log(res.result)
+            
+            let updateAnswerList = Object.assign([], this.state.answerList)
+            updateAnswerList.push(res.result)
+            
+            this.setState({
+                answerList: updateAnswerList
+            })
+        })
+    }
+
     render() {
         const answers = this.state.answerList.map((answer, i) => {
             return(
@@ -34,6 +53,8 @@ class Answers extends Component {
         return(
             <div>
                 {answers}
+                <br/>
+                <CreateAnswer onCreate={this.submitAnswer.bind(this)}/>
             </div>
         )
     }
