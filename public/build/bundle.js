@@ -18593,20 +18593,20 @@ var Home = function (_Component) {
                     { className: 'row' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'col-6' },
+                        { className: 'col-md-6 p-0 p-md-2' },
                         _react2.default.createElement(
                             'h2',
-                            { className: 'text-danger' },
+                            { className: 'text-danger text-center' },
                             'Question'
                         ),
                         _react2.default.createElement(_.Questions, null)
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'col-6' },
+                        { className: 'col-md-6 p-0 p-md-2' },
                         _react2.default.createElement(
                             'h2',
-                            { className: 'text-info' },
+                            { className: 'text-info text-center' },
                             'Answer'
                         ),
                         _react2.default.createElement(_.Answers, null)
@@ -18661,7 +18661,7 @@ var Answer = function (_Component) {
             var testingResult = this.props.answer.testingResult ? "Success" : "Fail";
             return _react2.default.createElement(
                 "div",
-                { className: "card m-2" },
+                { className: "card my-2" },
                 _react2.default.createElement(
                     "div",
                     { className: "card-block" },
@@ -18739,7 +18739,7 @@ var Question = function (_Component) {
             var status = this.props.question.status ? "Solved" : "Pending";
             return _react2.default.createElement(
                 "div",
-                { className: "card m-2" },
+                { className: "card my-2" },
                 _react2.default.createElement(
                     "div",
                     { className: "card-block" },
@@ -20946,7 +20946,7 @@ var CreateAnswer = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'card bg-faded m-2' },
+                { className: 'card my-2' },
                 _react2.default.createElement(
                     'div',
                     { className: 'card-block' },
@@ -21046,7 +21046,7 @@ var CreateQuestion = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'card bg-faded m-2' },
+                { className: 'card my-2' },
                 _react2.default.createElement(
                     'div',
                     { className: 'card-block' },

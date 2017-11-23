@@ -4,7 +4,7 @@ class Answer extends Component {
     render() {
         var testingResult = this.props.answer.testingResult ? "Success" : "Fail"
         return(
-            <div className="card m-2">
+            <div className="card my-2">
                 <div className="card-block">
                     <h4 className="card-title">QuestionID: {this.props.answer.questionId}</h4>
                     <h6 className="card-subtitle mb-2 text-muted">Testing Result: {testingResult}</h6>

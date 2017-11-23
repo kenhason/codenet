@@ -26,7 +26,7 @@ class CreateAnswer extends Component {
     
     render() {
         return(
-            <div className="card bg-faded m-2">
+            <div className="card my-2">
                 <div className="card-block">
                     <h4 className="card-title">Create Answer</h4>
                     <div>

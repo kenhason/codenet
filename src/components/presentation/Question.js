@@ -4,7 +4,7 @@ class Question extends Component {
     render() {
         var status = this.props.question.status ? "Solved" : "Pending"
         return(
-            <div className="card m-2">
+            <div className="card my-2">
                 <div className="card-block">
                     <h4 className="card-title">Category: {this.props.question.category}</h4>
                     <h6 className="card-subtitle mb-2 text-muted">Language: {this.props.question.language}</h6>
